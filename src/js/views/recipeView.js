@@ -100,7 +100,7 @@ ${this.#data.extendedIngredients
 
         <div class="recipe__directions">
           <h2 class="heading--2">How to cook it</h2>
-          <p class="recipe__directions-text">${this.#data.instructions}</p>
+          <div class="recipe__directions-text">${this.#data.instructions}</div>
         </div>
 `;
   }
