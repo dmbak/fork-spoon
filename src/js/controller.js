@@ -3,7 +3,6 @@ import icons from '../img/icons.svg';
 import recipeView from './views/recipeView';
 
 const searchResultPanelEl = document.querySelector('.results');
-const recepeDetailsContainerEl = document.querySelector('.recipe');
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -13,23 +12,23 @@ const timeout = function (s) {
   });
 };
 
-let recepeId;
+let recipeId;
 
-const showRecepeList = async function () {
+const showRecipeList = async function () {
   try {
     // loadSpiner(recepeDetailsContainerEl);
 
-    await model.loadRecepesList();
+    await model.loadRecipesList();
 
-    recepeId = model.recepesData.results[0].id;
-    const createSearchResultElement = function (recepe) {
+    recipeId = model.recipesData.results[0].id;
+    const createSearchResultElement = function (recipe) {
       const searchElement = `<li class="preview">
-        <a class="preview__link preview__link--active" data-id=${recepe.id} href="#23456">
+        <a class="preview__link preview__link--active" data-id=${recipe.id} href="#23456">
           <figure class="preview__fig">
-            <img src="${recepe.image}" alt="Test" />
+            <img src="${recipe.image}" alt="Test" />
           </figure>
           <div class="preview__data">
-            <h4 class="preview__title">${recepe.title}</h4>
+            <h4 class="preview__title">${recipe.title}</h4>
             <div class="preview__user-generated">
               <svg>
                 <use href="${icons}#icon-user"></use>
@@ -43,38 +42,36 @@ const showRecepeList = async function () {
     };
 
     let htmlEl = '';
-    model.recepesData.results.map(el => {
+    model.recipesData.results.map(el => {
       htmlEl += createSearchResultElement(el);
     });
 
     searchResultPanelEl.insertAdjacentHTML('Afterbegin', htmlEl);
-    showRecepeDetails();
+    showRecipeDetails();
   } catch (err) {
     console.error(err);
   }
 };
 
-const showRecepeDetails = async function () {
+const showRecipeDetails = async function () {
   try {
     recipeView.loadSpiner();
 
-    await model.loadRecepeDetails(recepeId);
+    await model.loadRecipeDetails(recipeId);
 
-    recipeView.render(model.recepeDetails);
+    recipeView.render(model.recipeDetails);
   } catch (err) {
     console.error(err);
   }
 };
 
-// let previewEl = searchResultPanelEl.children;
-// console.log(previewEl);
 searchResultPanelEl.addEventListener('click', function (e) {
   if (e.target.classList.contains('preview__link')) {
-    recepeId = parseInt(e.target.dataset.id);
-    model.loadRecepeDetails(recepeId);
-    showRecepeDetails();
-    console.log(model.recepeDetails);
+    recipeId = parseInt(e.target.dataset.id);
+    model.loadRecipeDetails(recipeId);
+    showRecipeDetails();
+    console.log(model.recipeDetails);
   }
 });
 
-showRecepeList();
+showRecipeList();
