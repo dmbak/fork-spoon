@@ -1,6 +1,6 @@
 import icons from '../../img/icons.svg';
 
-class previewRecipeView {
+class PreviewRecipeView {
   #parentEl = document.querySelector('.results');
   #data;
 
@@ -51,4 +51,4 @@ class previewRecipeView {
   }
 }
 
-export default new previewRecipeView();
+export default new PreviewRecipeView();

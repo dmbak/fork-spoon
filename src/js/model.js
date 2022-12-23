@@ -28,10 +28,11 @@ export const loadRecipeDetails = async function (id) {
 export const loadRecipeSearchByName = async function (query) {
   try {
     const response = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=ce8f5920b6b4439eb6474e2c6d097ed5`
+      `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=30&apiKey=ce8f5920b6b4439eb6474e2c6d097ed5`
     );
     const data = await response.json();
     if (!response.ok) throw new Error(`${response.status}`);
     recipesSearchByNameData = data;
+    clg();
   } catch (err) {}
 };
