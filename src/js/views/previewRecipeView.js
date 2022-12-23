@@ -1,16 +1,11 @@
+import View from './view';
 import icons from '../../img/icons.svg';
 
-class PreviewRecipeView {
-  #parentEl = document.querySelector('.results');
-  #data;
+class PreviewRecipeView extends View {
+  _parentEl = document.querySelector('.results');
+  _data;
 
-  render(data) {
-    this.#data = data;
-    const htmlEl = this.#generateHTML();
-    this.#parentEl.innerHTML = htmlEl;
-  }
-
-  #createSearchResultElement(rec) {
+  _createSearchResultElement(rec) {
     return `
       <li class="preview">
         <a class="preview__link preview__link--active" data-id=${rec.id} href="#23456">
@@ -31,23 +26,12 @@ class PreviewRecipeView {
 `;
   }
 
-  #generateHTML() {
+  _generateHTML() {
     let htmlEl = '';
-    this.#data.results.map(el => {
-      htmlEl += this.#createSearchResultElement(el);
-      console.log(el);
+    this._data.results.map(el => {
+      htmlEl += this._createSearchResultElement(el);
     });
     return htmlEl;
-  }
-
-  renderError(err) {
-    const html = `
-        <div class="error">
-            <p>${err}</p>
-          </div> 
-`;
-    this.#parentEl.innerHTML = '';
-    this.#parentEl.insertAdjacentHTML('afterbegin', html);
   }
 }
 

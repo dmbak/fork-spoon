@@ -1,33 +1,16 @@
+import View from './view';
 import icons from '../../img/icons.svg';
 
-class RecipeView {
-  #parentEl = document.querySelector('.recipe');
-  #data;
+class RecipeView extends View {
+  _parentEl = document.querySelector('.recipe');
+  _data;
 
-  render(data) {
-    this.#data = data;
-    const htmlEl = this.#generateHTML();
-    this.#parentEl.innerHTML = htmlEl;
-  }
-
-  loadSpiner() {
-    const html = `
-          <div class="spinner">
-          <svg>
-            <use href="${icons}#icon-loader"></use>
-          </svg>
-        </div>
-        `;
-    this.#parentEl.innerHTML = '';
-    this.#parentEl.insertAdjacentHTML('afterbegin', html);
-  }
-
-  #generateHTML() {
+  _generateHTML() {
     return `
         <figure class="recipe__fig">
-          <img src="${this.#data.image}" class="recipe__img" />
+          <img src="${this._data.image}" class="recipe__img" />
           <h1 class="recipe__title">
-            <span>${this.#data.title}</span>
+            <span>${this._data.title}</span>
           </h1>
         </figure>
 
@@ -37,7 +20,7 @@ class RecipeView {
               <use href="${icons}#icon-clock"></use>
             </svg>
             <span class="recipe__info-this.#data recipe__info-this.#data--minutes">${
-              this.#data.readyInMinutes
+              this._data.readyInMinutes
             }</span>
             <span class="recipe__info-text">minutes</span>
           </div>
@@ -46,7 +29,7 @@ class RecipeView {
               <use href="${icons}#icon-users"></use>
             </svg>
             <span class="recipe__info-this.#data recipe__info-this.#data--people">${
-              this.#data.servings
+              this._data.servings
             }</span>
             <span class="recipe__info-text">servings</span>
 
@@ -78,7 +61,7 @@ class RecipeView {
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>
           <ul class="recipe__ingredient-list">
-${this.#data.extendedIngredients
+${this._data.extendedIngredients
   .map(ingredien => {
     return `
  
@@ -100,20 +83,9 @@ ${this.#data.extendedIngredients
 
         <div class="recipe__directions">
           <h2 class="heading--2">How to cook it</h2>
-          <div class="recipe__directions-text">${this.#data.instructions}</div>
+          <div class="recipe__directions-text">${this._data.instructions}</div>
         </div>
 `;
   }
-
-  renderError(err) {
-    const html = `
-        <div class="error">
-            <p>${err}</p>
-          </div> 
-`;
-    this.#parentEl.innerHTML = '';
-    this.#parentEl.insertAdjacentHTML('afterbegin', html);
-  }
 }
-
 export default new RecipeView();

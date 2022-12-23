@@ -2,6 +2,7 @@ import * as model from './model';
 import recipeView from './views/recipeView';
 import previewRecipeView from './views/previewRecipeView';
 import searchView from './views/searchView';
+import View from './views/view';
 
 const searchResultPanelEl = document.querySelector('.results');
 
@@ -14,6 +15,8 @@ const loadFirstRecipeDetails = async function (id) {
 
 const showInitialRecipeList = async function () {
   try {
+    recipeView.loadSpiner();
+    previewRecipeView.loadSpiner();
     await model.loadInitialRecipesList();
 
     recipeId = model.initialRecipesData.results[0].id;
@@ -42,12 +45,14 @@ const showSearchResults = async function () {
     const query = searchView.getQuery();
     if (!query) return;
 
+    searchView.loadSpiner();
     await model.loadRecipeSearchByName(query);
 
     previewRecipeView.render(model.recipesSearchByNameData);
 
     recipeId = model.recipesSearchByNameData.results[0].id;
     loadFirstRecipeDetails(recipeId);
+    searchView.clearValue();
   } catch (err) {
     console.error(err);
   }
