@@ -1,45 +1,21 @@
 import * as model from './model';
-import icons from '../img/icons.svg';
 import recipeView from './views/recipeView';
+import previewRecipeView from './views/previewRecipeView';
 
 const searchResultPanelEl = document.querySelector('.results');
 
 let recipeId;
 
-const showRecipeList = async function () {
+const showInitialRecipeList = async function () {
   try {
-    // loadSpiner(recepeDetailsContainerEl);
+    await model.loadInitialRecipesList();
 
-    await model.loadRecipesList();
+    recipeId = model.initialRecipesData.results[0].id;
+    previewRecipeView.render(model.initialRecipesData);
 
-    recipeId = model.recipesData.results[0].id;
-    const createSearchResultElement = function (recipe) {
-      const searchElement = `<li class="preview">
-        <a class="preview__link preview__link--active" data-id=${recipe.id} href="#23456">
-          <figure class="preview__fig">
-            <img src="${recipe.image}" alt="Test" />
-          </figure>
-          <div class="preview__data">
-            <h4 class="preview__title">${recipe.title}</h4>
-            <div class="preview__user-generated">
-              <svg>
-                <use href="${icons}#icon-user"></use>
-              </svg>
-            </div>
-          </div>
-        </a>
-      </li>
-      <br />`;
-      return searchElement;
-    };
-
-    let htmlEl = '';
-    model.recipesData.results.map(el => {
-      htmlEl += createSearchResultElement(el);
-    });
-
-    searchResultPanelEl.insertAdjacentHTML('Afterbegin', htmlEl);
-    showRecipeDetails();
+    // Loading details for first recipe
+    await model.loadRecipeDetails(recipeId);
+    recipeView.render(model.recipeDetails);
   } catch (err) {
     console.error(err);
   }
@@ -53,11 +29,12 @@ const showRecipeDetails = async function () {
 
     recipeView.render(model.recipeDetails);
   } catch (err) {
-    console.error(err);
+    model.renderError(err);
   }
 };
 
 searchResultPanelEl.addEventListener('click', function (e) {
+  console.log(e.target);
   if (e.target.classList.contains('preview__link')) {
     recipeId = parseInt(e.target.dataset.id);
     model.loadRecipeDetails(recipeId);
@@ -66,4 +43,4 @@ searchResultPanelEl.addEventListener('click', function (e) {
   }
 });
 
-showRecipeList();
+showInitialRecipeList();

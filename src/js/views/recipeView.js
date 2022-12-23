@@ -104,6 +104,16 @@ ${this.#data.extendedIngredients
         </div>
 `;
   }
+
+  renderError(err) {
+    const html = `
+        <div class="error">
+            <p>${err}</p>
+          </div> 
+`;
+    this.#parentEl.innerHTML = '';
+    this.#parentEl.insertAdjacentHTML('afterbegin', html);
+  }
 }
 
 export default new RecipeView();
