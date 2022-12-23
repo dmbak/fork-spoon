@@ -8,17 +8,12 @@ class PreviewRecipeView extends View {
   _createSearchResultElement(rec) {
     return `
       <li class="preview">
-        <a class="preview__link preview__link--active" data-id=${rec.id} href="#23456">
+        <a class="preview__link" data-id=${rec.id} href="">
           <figure class="preview__fig">
             <img src="${rec.image}" alt="Test" />
           </figure>
           <div class="preview__data">
             <h4 class="preview__title">${rec.title}</h4>
-            <div class="preview__user-generated">
-              <svg>
-                <use href="${icons}#icon-user"></use>
-              </svg>
-            </div>
           </div>
         </a>
       </li>
