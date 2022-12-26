@@ -59,12 +59,13 @@ const showSearchResults = async function () {
 };
 
 searchResultPanelEl.addEventListener('click', function (e) {
+  e.preventDefault();
   console.log(e.target);
-  if (e.target.classList.contains('preview__link')) {
-    recipeId = parseInt(e.target.dataset.id);
+  const targetLink = e.target.closest('.preview__link');
+  if (targetLink) {
+    recipeId = parseInt(targetLink.dataset.id);
     model.loadRecipeDetails(recipeId);
     showRecipeDetails();
-    console.log(model.recipeDetails);
   }
 });
 
