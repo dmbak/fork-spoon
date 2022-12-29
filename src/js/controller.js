@@ -2,7 +2,7 @@ import * as model from './model';
 import recipeView from './views/recipeView';
 import previewRecipeView from './views/previewRecipeView';
 import searchView from './views/searchView';
-import View from './views/view';
+import { loadPageCount } from './views/paginationView';
 
 const searchResultPanelEl = document.querySelector('.results');
 
@@ -53,6 +53,7 @@ const showSearchResults = async function () {
     recipeId = model.recipesSearchByNameData.results[0].id;
     loadFirstRecipeDetails(recipeId);
     searchView.clearValue();
+    loadPageCount();
   } catch (err) {
     console.error(err);
   }
@@ -60,7 +61,6 @@ const showSearchResults = async function () {
 
 searchResultPanelEl.addEventListener('click', function (e) {
   e.preventDefault();
-  console.log(e.target);
   const targetLink = e.target.closest('.preview__link');
   if (targetLink) {
     recipeId = parseInt(targetLink.dataset.id);
@@ -69,9 +69,12 @@ searchResultPanelEl.addEventListener('click', function (e) {
   }
 });
 
+const generatePagination = async function () {};
+
 const init = function () {
   showInitialRecipeList();
   searchView.addHandlerSearch(showSearchResults);
+  generatePagination();
 };
 
 init();
