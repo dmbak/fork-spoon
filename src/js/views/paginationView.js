@@ -42,9 +42,7 @@ import View from './view';
 
 class PaginationView extends View {
   _data;
-  _paginationContainer = document.querySelector('.pagination-container');
-  _paginatedList = document.querySelector('.results');
-  _listItems = this._paginatedList.querySelectorAll('.preview');
+  _parentEl = document.querySelector('.pagination-container');
   _paginationNumbers = document.getElementById('pagination-numbers');
   _nextButton = document.querySelector('.pagination__btn--next');
   _prevButton = document.querySelector('.pagination__btn--prev');
@@ -56,14 +54,15 @@ class PaginationView extends View {
   _loadPageCount() {
     model.recipesSearchByNameData.totalResults <
     model.recipesSearchByNameData.number
-      ? (itemsCount = model.recipesSearchByNameData.totalResults)
-      : (itemsCount = model.recipesSearchByNameData.number);
-    pageCount = Math.ceil(parseInt(itemsCount) / paginationLimit);
+      ? (this._itemsCount = model.recipesSearchByNameData.totalResults)
+      : (this._itemsCount = model.recipesSearchByNameData.number);
+    this._pageCount = Math.ceil(
+      parseInt(this._itemsCount) / this._paginationLimit
+    );
   }
 
   _generateHTML() {
     return `
-            <div class="pagination-container">
           <button
             class="pagination-button"
             id="prev-button"
@@ -84,25 +83,29 @@ class PaginationView extends View {
             &gt;
           </button>
         </div>
-      </div>
       `;
   }
+
   _appendPageNumber(index) {
     const pageNumberEl = document.createElement('button');
     pageNumberEl.className = 'pagination-number';
     pageNumberEl.innerHTML = index;
     pageNumberEl.setAttribute('page-index', index);
     pageNumberEl.setAttribute('aria-label', 'Page ' + index);
-    paginationNumbers.appendChild(pageNumberEl);
+    this._parentEl.appendChild(pageNumberEl);
   }
 
   _getPaginationNumbers() {
-    console.log(pageCount);
-    paginationContainer.style.display = 'inline';
+    console.log(this._pageCount);
+    this._parentEl.style.display = 'inline';
 
-    for (let i = 1; i <= pageCount; i++) {
-      appendPageNumber(i);
+    for (let i = 1; i <= this._pageCount; i++) {
+      this._appendPageNumber(i);
     }
+  }
+
+  clearPagination() {
+    this._parentEl.innerHTML = '';
   }
 }
 export default new PaginationView();

@@ -53,9 +53,10 @@ const showSearchResults = async function () {
     recipeId = model.recipesSearchByNameData.results[0].id;
     loadFirstRecipeDetails(recipeId);
     searchView.clearValue();
+
     paginationView._loadPageCount();
     paginationView._getPaginationNumbers();
-    paginationView.render();
+    paginationView.clearPagination();
   } catch (err) {
     console.error(err);
   }
