@@ -54,9 +54,9 @@ const showSearchResults = async function () {
     loadFirstRecipeDetails(recipeId);
     searchView.clearValue();
 
+    paginationView.clearPagination();
     paginationView._loadPageCount();
     paginationView._getPaginationNumbers();
-    paginationView.clearPagination();
   } catch (err) {
     console.error(err);
   }
@@ -72,11 +72,10 @@ searchResultPanelEl.addEventListener('click', function (e) {
   }
 });
 
-// const generatePagination = async function () {};
-
 const init = function () {
   showInitialRecipeList();
   searchView.addHandlerSearch(showSearchResults);
+  paginationView.hidePagination();
 };
 
 init();

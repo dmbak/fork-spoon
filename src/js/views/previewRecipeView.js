@@ -1,5 +1,4 @@
 import View from './view';
-import icons from '../../img/icons.svg';
 
 class PreviewRecipeView extends View {
   _parentEl = document.querySelector('.results');
