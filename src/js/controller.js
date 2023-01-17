@@ -5,6 +5,7 @@ import searchView from './views/searchView';
 import paginationView from './views/paginationView';
 
 const searchResultPanelEl = document.querySelector('.results');
+const paginationContainer = document.querySelector('.pagination-container');
 
 let recipeId;
 
@@ -48,15 +49,26 @@ const showSearchResults = async function () {
     searchView.loadSpiner();
     await model.loadRecipeSearchByName(query);
 
-    previewRecipeView.render(model.recipesSearchByNameData);
-
-    recipeId = model.recipesSearchByNameData.results[0].id;
-    loadFirstRecipeDetails(recipeId);
     searchView.clearValue();
 
+    // console.log(model.recipesSearchByNameData.results.length);
     paginationView.clearPagination();
     paginationView._loadPageCount();
     paginationView._getPaginationNumbers();
+
+    if (model.recipesSearchByNameData.results.length <= 10) {
+      previewRecipeView.render(model.recipesSearchByNameData);
+      recipeId = model.recipesSearchByNameData.results[0].id;
+      loadFirstRecipeDetails(recipeId);
+      paginationView.hidePagination();
+    }
+
+    if (model.recipesSearchByNameData.results.length > 10) {
+      previewRecipeView.render(model.recipesSearchByNameData);
+      recipeId = model.recipesSearchByNameData.results[0].id;
+      loadFirstRecipeDetails(recipeId);
+      paginationView._setCurrentPage(1);
+    }
   } catch (err) {
     console.error(err);
   }
@@ -69,6 +81,16 @@ searchResultPanelEl.addEventListener('click', function (e) {
     recipeId = parseInt(targetLink.dataset.id);
     model.loadRecipeDetails(recipeId);
     showRecipeDetails();
+  }
+});
+
+paginationContainer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const paginationEl = e.target.closest('.pagination-number');
+  if (paginationEl) {
+    paginationView._setActivePaginationNumber(paginationEl);
+    let index = paginationEl.getAttribute('page-index');
+    paginationView._setCurrentPage(index);
   }
 });
 

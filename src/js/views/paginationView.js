@@ -5,10 +5,13 @@ class PaginationView extends View {
   _data;
   _parentEl = document.querySelector('.pagination-container');
   _paginationNumbers = document.querySelector('#pagination-numbers');
+  _paginationNumberList = document.querySelectorAll('.pagination-number');
   _nextButton = document.querySelector('.pagination__btn--next');
   _prevButton = document.querySelector('.pagination__btn--prev');
+  _resultsElements = document.getElementsByClassName('preview');
   _paginationLimit = 10;
   _pageCount;
+  _CurrentPage;
   _itemsCount;
 
   _loadPageCount() {
@@ -36,6 +39,31 @@ class PaginationView extends View {
     for (let i = 1; i <= this._pageCount; i++) {
       this._appendPageNumber(i);
     }
+  }
+
+  _setCurrentPage(pageNum) {
+    let elements = Array.from(this._resultsElements);
+
+    this._currentPage = pageNum;
+
+    const prevRange = (pageNum - 1) * this._paginationLimit;
+    const currRange = pageNum * this._paginationLimit;
+
+    elements.forEach((item, index) => {
+      item.style.display = 'none';
+      if (index >= prevRange && index < currRange) {
+        item.style.display = 'block';
+      }
+    });
+  }
+
+  _setActivePaginationNumber(targetEl) {
+    const allNumEls = this._paginationNumbers.childNodes;
+    console.log(allNumEls);
+    allNumEls.forEach(item => {
+      item.classList.remove('active');
+    });
+    targetEl.classList.add('active');
   }
 
   clearPagination() {

@@ -16,7 +16,6 @@ class PreviewRecipeView extends View {
           </div>
         </a>
       </li>
-      <br />
 `;
   }
 
