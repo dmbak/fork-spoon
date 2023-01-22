@@ -84,20 +84,11 @@ searchResultPanelEl.addEventListener('click', function (e) {
   }
 });
 
-paginationContainer.addEventListener('click', function (e) {
-  e.preventDefault();
-  const paginationEl = e.target.closest('.pagination-number');
-  if (paginationEl) {
-    paginationView._setActivePaginationNumber(paginationEl);
-    let index = paginationEl.getAttribute('page-index');
-    paginationView._setCurrentPage(index);
-  }
-});
-
 const init = function () {
   showInitialRecipeList();
   searchView.addHandlerSearch(showSearchResults);
   paginationView.hidePagination();
+  paginationView._controlPagination();
 };
 
 init();

@@ -6,13 +6,14 @@ class PaginationView extends View {
   _parentEl = document.querySelector('.pagination-container');
   _paginationNumbers = document.querySelector('#pagination-numbers');
   _paginationNumberList = document.querySelectorAll('.pagination-number');
-  _nextButton = document.querySelector('.pagination__btn--next');
-  _prevButton = document.querySelector('.pagination__btn--prev');
+  _nextButton = document.querySelector('#next-button');
+  _prevButton = document.querySelector('#prev-button');
   _resultsElements = document.getElementsByClassName('preview');
   _paginationLimit = 10;
   _pageCount;
-  _CurrentPage;
+  _currentPage;
   _itemsCount;
+  _pageIndex;
 
   _loadPageCount() {
     model.recipesSearchByNameData.totalResults <
@@ -39,9 +40,14 @@ class PaginationView extends View {
     for (let i = 1; i <= this._pageCount; i++) {
       this._appendPageNumber(i);
     }
+
+    this._pageIndex = 1;
+    console.log(this._pageIndex);
   }
 
   _setCurrentPage(pageNum) {
+    const prevButtonEl = document.querySelector('#prev-button');
+    const nextButtonEl = document.querySelector('#next-button');
     let elements = Array.from(this._resultsElements);
 
     this._currentPage = pageNum;
@@ -59,11 +65,44 @@ class PaginationView extends View {
 
   _setActivePaginationNumber(targetEl) {
     const allNumEls = this._paginationNumbers.childNodes;
-    console.log(allNumEls);
     allNumEls.forEach(item => {
       item.classList.remove('active');
     });
     targetEl.classList.add('active');
+  }
+
+  _controlPagination() {
+    let self = this;
+    this._parentEl.addEventListener('click', function (e) {
+      e.preventDefault();
+      const paginationEl = e.target.closest('.pagination-number');
+      const paginationNextEl = e.target.closest('#next-button');
+      const paginationPrevEl = e.target.closest('#prev-button');
+
+      if (self._pageIndex === 1) {
+        self._prevButton.style.display = 'none';
+      }
+
+      if (self._pageIndex === self._pageCount) {
+        self._nextButton.style.display = 'none';
+      }
+
+      if (paginationEl) {
+        self._setActivePaginationNumber(paginationEl);
+        this._pageIndex = paginationEl.getAttribute('page-index');
+        self._setCurrentPage(this._pageIndex);
+        console.log(`next ${this._pageIndex}`);
+      }
+      if (paginationNextEl) {
+        self._pageIndex++;
+        self._setCurrentPage(self._pageIndex);
+      }
+
+      if (paginationPrevEl) {
+        self._pageIndex--;
+        self._setCurrentPage(self._pageIndex);
+      }
+    });
   }
 
   clearPagination() {
