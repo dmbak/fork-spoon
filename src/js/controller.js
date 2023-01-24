@@ -52,9 +52,6 @@ const showSearchResults = async function () {
     searchView.clearValue();
 
     // console.log(model.recipesSearchByNameData.results.length);
-    paginationView.clearPagination();
-    paginationView._loadPageCount();
-    paginationView._getPaginationNumbers();
 
     if (model.recipesSearchByNameData.results.length <= 10) {
       previewRecipeView.render(model.recipesSearchByNameData);
@@ -67,7 +64,7 @@ const showSearchResults = async function () {
       previewRecipeView.render(model.recipesSearchByNameData);
       recipeId = model.recipesSearchByNameData.results[0].id;
       loadFirstRecipeDetails(recipeId);
-      paginationView._setCurrentPage(1);
+      paginationView._paginationInit();
     }
   } catch (err) {
     console.error(err);

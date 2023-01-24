@@ -34,15 +34,27 @@ class PaginationView extends View {
     this._paginationNumbers.appendChild(pageNumberEl);
   }
 
+  _controlArrows() {
+    if (this._pageIndex === 1) {
+      this._prevButton.style.display = 'none';
+      this._nextButton.style.display = 'inline';
+    } else if (this._pageIndex === this._pageCount) {
+      this._prevButton.style.display = 'inline';
+      this._nextButton.style.display = 'none';
+    } else {
+      this._nextButton.style.display = 'inline';
+      this._prevButton.style.display = 'inline';
+    }
+  }
+
   _getPaginationNumbers() {
+    this._pageIndex = 1;
     this._parentEl.style.display = 'flex';
+    this._prevButton.style.display = 'none';
 
     for (let i = 1; i <= this._pageCount; i++) {
       this._appendPageNumber(i);
     }
-
-    this._pageIndex = 1;
-    console.log(this._pageIndex);
   }
 
   _setCurrentPage(pageNum) {
@@ -63,9 +75,19 @@ class PaginationView extends View {
     });
   }
 
+  _paginationInit() {
+    this.clearPagination();
+    this._loadPageCount();
+    this._getPaginationNumbers();
+    this._setCurrentPage(1);
+    this._currentPage = 1;
+    this._setActivePaginationNumber(
+      document.querySelector(`[page-index="${this._currentPage}"]`)
+    );
+  }
+
   _setActivePaginationNumber(targetEl) {
-    const allNumEls = this._paginationNumbers.childNodes;
-    allNumEls.forEach(item => {
+    this._paginationNumbers.childNodes.forEach(item => {
       item.classList.remove('active');
     });
     targetEl.classList.add('active');
@@ -79,28 +101,33 @@ class PaginationView extends View {
       const paginationNextEl = e.target.closest('#next-button');
       const paginationPrevEl = e.target.closest('#prev-button');
 
-      if (self._pageIndex === 1) {
-        self._prevButton.style.display = 'none';
-      }
-
-      if (self._pageIndex === self._pageCount) {
-        self._nextButton.style.display = 'none';
-      }
+      self._controlArrows();
 
       if (paginationEl) {
         self._setActivePaginationNumber(paginationEl);
-        this._pageIndex = paginationEl.getAttribute('page-index');
-        self._setCurrentPage(this._pageIndex);
-        console.log(`next ${this._pageIndex}`);
+        self._pageIndex = paginationEl.getAttribute('page-index');
+        self._setCurrentPage(self._pageIndex);
+        self._controlArrows();
       }
+
       if (paginationNextEl) {
         self._pageIndex++;
-        self._setCurrentPage(self._pageIndex);
+        self._currentPage++;
+        renderingArrows();
       }
 
       if (paginationPrevEl) {
         self._pageIndex--;
+        self._currentPage--;
+        renderingArrows();
+      }
+
+      function renderingArrows() {
         self._setCurrentPage(self._pageIndex);
+        self._setActivePaginationNumber(
+          document.querySelector(`[page-index="${self._currentPage}"]`)
+        );
+        self._controlArrows();
       }
     });
   }
