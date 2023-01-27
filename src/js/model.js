@@ -1,6 +1,7 @@
 export let initialRecipesData = {};
 export let recipeDetails = {};
 export let recipesSearchByNameData = {};
+import recipeView from './views/recipeView';
 
 export const loadInitialRecipesList = async function () {
   try {
@@ -33,6 +34,5 @@ export const loadRecipeSearchByName = async function (query) {
     const data = await response.json();
     if (!response.ok) throw new Error(`${response.status}`);
     recipesSearchByNameData = data;
-    clg();
   } catch (err) {}
 };

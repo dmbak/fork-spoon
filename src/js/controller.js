@@ -5,13 +5,12 @@ import searchView from './views/searchView';
 import paginationView from './views/paginationView';
 
 const searchResultPanelEl = document.querySelector('.results');
-const paginationContainer = document.querySelector('.pagination-container');
-
 let recipeId;
 
 const loadFirstRecipeDetails = async function (id) {
   await model.loadRecipeDetails(id);
   recipeView.render(model.recipeDetails);
+  controlServings();
 };
 
 const showInitialRecipeList = async function () {
@@ -36,6 +35,8 @@ const showRecipeDetails = async function () {
     await model.loadRecipeDetails(recipeId);
 
     recipeView.render(model.recipeDetails);
+
+    controlServings();
   } catch (err) {
     model.renderError(err);
   }
@@ -80,6 +81,39 @@ searchResultPanelEl.addEventListener('click', function (e) {
     showRecipeDetails();
   }
 });
+
+const controlServings = function () {
+  const recipeInfoBtns = document.querySelector('.recipe__info-buttons');
+
+  recipeInfoBtns.addEventListener('click', function (e) {
+    e.preventDefault();
+    const decreaseBtn = e.target.closest('.btn--decrease-servings');
+    const increaseBtn = e.target.closest('.btn--increase-servings');
+    const servingsEl = document.querySelector('.recipe__info-persons');
+    const initialServingValue = model.recipeDetails.servings;
+    let servingsVal = servingsEl.innerHTML;
+
+    const updateIngredients = function (initVal, val) {
+      console.log(model.recipeDetails);
+      model.recipeDetails.extendedIngredients.forEach(el => {
+        let valRate = val / initVal;
+        el.amount = el.amount * valRate;
+      });
+      model.recipeDetails.servings = val;
+    };
+
+    if (decreaseBtn) {
+      servingsVal--;
+      updateIngredients(initialServingValue, servingsVal);
+      recipeView.render(model.recipeDetails);
+    }
+    if (increaseBtn) {
+      servingsVal++;
+      updateIngredients(initialServingValue, servingsVal);
+      recipeView.render(model.recipeDetails);
+    }
+  });
+};
 
 const init = function () {
   showInitialRecipeList();
