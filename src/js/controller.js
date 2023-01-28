@@ -42,6 +42,22 @@ const showRecipeDetails = async function () {
   }
 };
 
+const updateRecipeDetails = async function () {
+  try {
+    console.log(model.recipeDetails);
+    model.recipeDetails.extendedIngredients.forEach(el => {
+      console.log(el.amount);
+      el.amount = el.amount.toFixed(1);
+      console.log(el.amount);
+    });
+    recipeView.render(model.recipeDetails);
+
+    controlServings();
+  } catch (err) {
+    model.renderError(err);
+  }
+};
+
 const showSearchResults = async function () {
   try {
     const query = searchView.getQuery();
@@ -84,17 +100,17 @@ searchResultPanelEl.addEventListener('click', function (e) {
 
 const controlServings = function () {
   const recipeInfoBtns = document.querySelector('.recipe__info-buttons');
+  // const servingsEl = document.querySelector('.recipe__info-persons');
+  let servingsVal = model.recipeDetails.servings;
 
   recipeInfoBtns.addEventListener('click', function (e) {
     e.preventDefault();
     const decreaseBtn = e.target.closest('.btn--decrease-servings');
     const increaseBtn = e.target.closest('.btn--increase-servings');
-    const servingsEl = document.querySelector('.recipe__info-persons');
     const initialServingValue = model.recipeDetails.servings;
-    let servingsVal = servingsEl.innerHTML;
+    console.log(servingsVal);
 
     const updateIngredients = function (initVal, val) {
-      console.log(model.recipeDetails);
       model.recipeDetails.extendedIngredients.forEach(el => {
         let valRate = val / initVal;
         el.amount = el.amount * valRate;
@@ -105,12 +121,14 @@ const controlServings = function () {
     if (decreaseBtn) {
       servingsVal--;
       updateIngredients(initialServingValue, servingsVal);
-      recipeView.render(model.recipeDetails);
+      updateRecipeDetails();
+      console.log(model.recipeDetails);
     }
+
     if (increaseBtn) {
       servingsVal++;
       updateIngredients(initialServingValue, servingsVal);
-      recipeView.render(model.recipeDetails);
+      updateRecipeDetails();
     }
   });
 };
