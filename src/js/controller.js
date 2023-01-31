@@ -3,6 +3,8 @@ import recipeView from './views/recipeView';
 import previewRecipeView from './views/previewRecipeView';
 import searchView from './views/searchView';
 import paginationView from './views/paginationView';
+import controlServingsView from './views/controlServingsView';
+import bookmarksView from './views/bookmarksView';
 
 const searchResultPanelEl = document.querySelector('.results');
 let recipeId;
@@ -10,7 +12,7 @@ let recipeId;
 const loadFirstRecipeDetails = async function (id) {
   await model.loadRecipeDetails(id);
   recipeView.render(model.recipeDetails);
-  controlServings();
+  controlServingsView._controlServings();
 };
 
 const showInitialRecipeList = async function () {
@@ -36,23 +38,7 @@ const showRecipeDetails = async function () {
 
     recipeView.render(model.recipeDetails);
 
-    controlServings();
-  } catch (err) {
-    model.renderError(err);
-  }
-};
-
-const updateRecipeDetails = async function () {
-  try {
-    console.log(model.recipeDetails);
-    model.recipeDetails.extendedIngredients.forEach(el => {
-      console.log(el.amount);
-      el.amount = el.amount.toFixed(1);
-      console.log(el.amount);
-    });
-    recipeView.render(model.recipeDetails);
-
-    controlServings();
+    controlServingsView._controlServings();
   } catch (err) {
     model.renderError(err);
   }
@@ -67,8 +53,6 @@ const showSearchResults = async function () {
     await model.loadRecipeSearchByName(query);
 
     searchView.clearValue();
-
-    // console.log(model.recipesSearchByNameData.results.length);
 
     if (model.recipesSearchByNameData.results.length <= 10) {
       previewRecipeView.render(model.recipesSearchByNameData);
@@ -98,39 +82,9 @@ searchResultPanelEl.addEventListener('click', function (e) {
   }
 });
 
-const controlServings = function () {
-  const recipeInfoBtns = document.querySelector('.recipe__info-buttons');
-  // const servingsEl = document.querySelector('.recipe__info-persons');
-  let servingsVal = model.recipeDetails.servings;
-
-  recipeInfoBtns.addEventListener('click', function (e) {
-    e.preventDefault();
-    const decreaseBtn = e.target.closest('.btn--decrease-servings');
-    const increaseBtn = e.target.closest('.btn--increase-servings');
-    const initialServingValue = model.recipeDetails.servings;
-    console.log(servingsVal);
-
-    const updateIngredients = function (initVal, val) {
-      model.recipeDetails.extendedIngredients.forEach(el => {
-        let valRate = val / initVal;
-        el.amount = el.amount * valRate;
-      });
-      model.recipeDetails.servings = val;
-    };
-
-    if (decreaseBtn) {
-      servingsVal--;
-      updateIngredients(initialServingValue, servingsVal);
-      updateRecipeDetails();
-      console.log(model.recipeDetails);
-    }
-
-    if (increaseBtn) {
-      servingsVal++;
-      updateIngredients(initialServingValue, servingsVal);
-      updateRecipeDetails();
-    }
-  });
+const showBookmarks = async function () {
+  await model.loadInitialRecipesList();
+  bookmarksView.render(model.initialRecipesData);
 };
 
 const init = function () {
@@ -138,6 +92,8 @@ const init = function () {
   searchView.addHandlerSearch(showSearchResults);
   paginationView.hidePagination();
   paginationView._controlPagination();
+  bookmarksView._addRemoveBookmark();
+  showBookmarks();
 };
 
 init();

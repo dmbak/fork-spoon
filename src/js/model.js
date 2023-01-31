@@ -1,7 +1,8 @@
 export let initialRecipesData = {};
 export let recipeDetails = {};
 export let recipesSearchByNameData = {};
-import recipeView from './views/recipeView';
+// export let bookmarks = [];
+export let bookmarkedRecipes = {};
 
 export const loadInitialRecipesList = async function () {
   try {

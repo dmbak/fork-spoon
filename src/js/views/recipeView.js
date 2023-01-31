@@ -1,5 +1,7 @@
+import * as model from '../model';
 import View from './view';
 import icons from '../../img/icons.svg';
+import controlServingsView from './controlServingsView';
 
 class RecipeView extends View {
   _parentEl = document.querySelector('.recipe');
@@ -47,9 +49,11 @@ class RecipeView extends View {
 
           <div class="recipe__user-generated hidden">
           </div>
-          <button class="btn--round">
-            <svg class="">
-              <use href="${icons}#icon-bookmark-fill"></use>
+          <button class="btn--bookmark">
+            <svg class="icon--bookmark">
+              <use href="${icons}#icon-bookmark${
+      this._data.bookmarked === true ? '-fill' : ''
+    }"></use>
             </svg>
           </button>
         </div>
@@ -82,5 +86,14 @@ ${this._data.extendedIngredients
         </div>
 `;
   }
+
+  _updateRecipeDetails = async function () {
+    model.recipeDetails.extendedIngredients.forEach(el => {
+      el.amount = el.amount.toFixed(1);
+    });
+
+    this.render(model.recipeDetails);
+    controlServingsView._controlServings();
+  };
 }
 export default new RecipeView();
