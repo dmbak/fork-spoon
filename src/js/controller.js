@@ -33,11 +33,8 @@ const showInitialRecipeList = async function () {
 const showRecipeDetails = async function () {
   try {
     recipeView.loadSpiner();
-
     await model.loadRecipeDetails(recipeId);
-
     recipeView.render(model.recipeDetails);
-
     controlServingsView._controlServings();
   } catch (err) {
     model.renderError(err);
@@ -82,18 +79,13 @@ searchResultPanelEl.addEventListener('click', function (e) {
   }
 });
 
-const showBookmarks = async function () {
-  await model.loadInitialRecipesList();
-  bookmarksView.render(model.initialRecipesData);
-};
-
 const init = function () {
   showInitialRecipeList();
   searchView.addHandlerSearch(showSearchResults);
   paginationView.hidePagination();
   paginationView._controlPagination();
   bookmarksView._addRemoveBookmark();
-  showBookmarks();
+  bookmarksView.showBookmarks();
 };
 
 init();
