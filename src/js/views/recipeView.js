@@ -47,11 +47,9 @@ class RecipeView extends View {
             </div>
           </div>
 
-          <div class="recipe__user-generated hidden">
-          </div>
-          <button class="btn--bookmark">
-            <svg class="icon--bookmark">
-              <use href="${icons}#icon-bookmark${
+          <button class="btn--favorites">
+            <svg class="icon--favorites">
+              <use href="${icons}#icon-favorites${
       this._data.bookmarked === true ? '-fill' : ''
     }"></use>
             </svg>

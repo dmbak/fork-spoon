@@ -3,7 +3,7 @@ import View from './view';
 import recipeView from './recipeView';
 
 class BookmarksView extends View {
-  _parentEl = document.querySelector('.bookmarks__list');
+  _parentEl = document.querySelector('.favorites__list');
   _recipiInfoEl = document.querySelector('.recipe');
 
   _createBookmarkElement(rec) {
@@ -38,7 +38,7 @@ class BookmarksView extends View {
   _addRemoveBookmark() {
     const self = this;
     this._recipiInfoEl.addEventListener('click', function (e) {
-      const bookmarkBtn = e.target.closest('.btn--bookmark');
+      const bookmarkBtn = e.target.closest('.btn--favorites');
       const recipeId = model.recipeDetails.id;
       if (bookmarkBtn) {
         if (!model.recipeDetails.bookmarked) {
