@@ -50,7 +50,9 @@ class RecipeView extends View {
           <button class="btn--favorites">
             <svg class="icon--favorites">
               <use href="${icons}#icon-favorites${
-      this._data.bookmarked === true ? '-fill' : ''
+      model.bookmarkedRecipes.results.some(el => el['id'] === this._data.id)
+        ? '-fill'
+        : ''
     }"></use>
             </svg>
           </button>

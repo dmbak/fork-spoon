@@ -1,7 +1,6 @@
 export let initialRecipesData = {};
 export let recipeDetails = {};
 export let recipesSearchByNameData = {};
-// export let bookmarks = [];
 export let bookmarkedRecipes = { results: [] };
 
 export const loadInitialRecipesList = async function () {

@@ -23,7 +23,6 @@ class BookmarksView extends View {
 
   _generateHTML() {
     let htmlEl = '';
-    console.log(this._data);
     this._data.results.map(el => {
       htmlEl += this._createBookmarkElement(el);
     });
@@ -31,7 +30,6 @@ class BookmarksView extends View {
   }
 
   showBookmarks() {
-    console.log(model.bookmarkedRecipes);
     this.render(model.bookmarkedRecipes);
   }
 
@@ -44,20 +42,17 @@ class BookmarksView extends View {
         if (!model.recipeDetails.bookmarked) {
           model.recipeDetails.bookmarked = true;
           model.bookmarkedRecipes.results.push(model.recipeDetails);
-          console.log(model.bookmarkedRecipes);
           recipeView.render(model.recipeDetails);
           self.showBookmarks();
         } else {
           model.recipeDetails.bookmarked = false;
-          console.log(
-            model.bookmarkedRecipes.results.findIndex(x => x.id === recipeId)
-          );
           let index = model.bookmarkedRecipes.results.findIndex(
             x => x.id === recipeId
           );
           if (index !== -1) {
             model.bookmarkedRecipes.results.splice(index, 1);
           }
+          console.log(model.recipeDetails);
           console.log(model.bookmarkedRecipes);
           recipeView.render(model.recipeDetails);
           self.showBookmarks();
