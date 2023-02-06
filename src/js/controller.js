@@ -6,7 +6,8 @@ import paginationView from './views/paginationView';
 import controlServingsView from './views/controlServingsView';
 import bookmarksView from './views/bookmarksView';
 
-const searchResultPanelEl = document.querySelector('.results');
+// const searchResultPanelEl = document.querySelector('.results');
+// const BookmarksPanelEl = document.querySelector('.favorites');
 let recipeId;
 
 const loadFirstRecipeDetails = async function (id) {
@@ -69,12 +70,20 @@ const showSearchResults = async function () {
   }
 };
 
-searchResultPanelEl.addEventListener('click', function (e) {
+document.addEventListener('click', function (e) {
   e.preventDefault();
   const targetLink = e.target.closest('.preview__link');
+
   if (targetLink) {
     recipeId = parseInt(targetLink.dataset.id);
     model.loadRecipeDetails(recipeId);
+
+    let elements = Array.from(document.querySelectorAll('.preview'));
+    elements.forEach(item => {
+      item.classList.remove('active');
+    });
+    e.target.closest('.preview').classList.add('active');
+
     showRecipeDetails();
   }
 });

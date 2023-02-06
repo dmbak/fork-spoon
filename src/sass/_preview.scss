@@ -16,10 +16,6 @@
       background-color: $color-grey-light-1;
       transform: translateY(-2px);
     }
-
-    &--active {
-      background-color: $color-grey-light-1;
-    }
   }
 
   &__fig {
@@ -105,4 +101,8 @@
       fill: $color-primary;
     }
   }
+}
+
+.active {
+  background-color: $color-grey-light-1;
 }

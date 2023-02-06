@@ -31,6 +31,7 @@ class BookmarksView extends View {
 
   showBookmarks() {
     this.render(model.bookmarkedRecipes);
+    
   }
 
   _addRemoveBookmark() {
